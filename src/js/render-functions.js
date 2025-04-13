@@ -55,9 +55,7 @@ export function showLoader() {
 }
 
 export function hideLoader() {
-  // setTimeout(() => {
   loader.classList.add('hiden');
-  // }, 1000);
 }
 
 export function showLoadMoreButton() {

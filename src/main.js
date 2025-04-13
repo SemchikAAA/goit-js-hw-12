@@ -44,12 +44,15 @@ async function handleSubmit(event) {
 
   try {
     const data = await getImagesByQuery(currentQuery);
+
     totalHits = data.totalHits;
+
     clearGallery();
 
     createGallery(data.hits);
 
-    if (totalHits > 15) {
+    const totalLoaded = currentPage * data.hits.length;
+    if (totalLoaded < totalHits) {
       showLoadMoreButton();
     } else {
       iziToast.info({
@@ -59,7 +62,10 @@ async function handleSubmit(event) {
       });
     }
   } catch (error) {
-    console.log(error);
+    iziToast.error({
+      title: 'Error',
+      message: `${error.message}`,
+    });
   } finally {
     hideLoader();
   }
@@ -68,14 +74,16 @@ async function handleSubmit(event) {
 async function handleLoadMore() {
   currentPage++;
 
+  showLoader();
+
+  hideLoadMoreButton();
+
   try {
-    showLoader();
-    hideLoadMoreButton();
-    const totalLoaded = currentPage * 15;
     const data = await getImagesByQuery(currentQuery, currentPage);
 
     createGallery(data.hits);
 
+    const totalLoaded = currentPage * data.hits.length;
     if (totalLoaded < totalHits) {
       showLoadMoreButton();
     } else {
@@ -95,7 +103,10 @@ async function handleLoadMore() {
       behavior: 'smooth',
     });
   } catch (error) {
-    console.log(error);
+    iziToast.error({
+      title: 'Error',
+      message: `${error.message}`,
+    });
   } finally {
     hideLoader();
   }

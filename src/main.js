@@ -60,12 +60,14 @@ async function handleSubmit(event) {
         message: "We're sorry, but you've reached the end of search results.",
         position: 'topLeft',
       });
+      hideLoadMoreButton();
     }
   } catch (error) {
     iziToast.error({
       title: 'Error',
       message: `${error.message}`,
     });
+    hideLoadMoreButton();
   } finally {
     hideLoader();
   }
@@ -80,6 +82,7 @@ async function handleLoadMore() {
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
+    console.log(data);
 
     createGallery(data.hits);
 
@@ -107,6 +110,7 @@ async function handleLoadMore() {
       title: 'Error',
       message: `${error.message}`,
     });
+    hideLoadMoreButton();
   } finally {
     hideLoader();
   }

@@ -82,7 +82,6 @@ async function handleLoadMore() {
 
   try {
     const data = await getImagesByQuery(currentQuery, currentPage);
-    console.log(data);
 
     createGallery(data.hits);
 
